@@ -9,7 +9,7 @@ const readFile = promisify(fs.readFile)
  * @param {Document} doc XML document with csproj
  * @param {string} dependency dependency path to project
  */
-async function removeProjectDep(doc, dependency) {
+async function removeProjectDependency(doc, dependency) {
     const itemGroups = doc.documentElement.getElementsByTagName("ItemGroup");
     for (let i = 0; i < itemGroups.length; i++) {
         const projectReferences = itemGroups.item(i).getElementsByTagName("ProjectReference");
@@ -31,14 +31,13 @@ async function removeProjectDep(doc, dependency) {
  */
 async function addProjectDependency(doc, dependency) {
     const document = doc.documentElement;
-    const project = document.getElementsByTagName("Project").item(0)
     const existingProjectReference = document.getElementsByTagName("ProjectReference")
     const addToExistingGroup = existingProjectReference.length > 0
     const itemGroup = addToExistingGroup ? existingProjectReference.item(0).parentNode : doc.createElement("ItemGroup")
     const projectReference = doc.createElement("ProjectReference")
     projectReference.setAttribute("Include", dependency)
     itemGroup.appendChild(projectReference)
-    if (!addToExistingGroup) project.appendChild(itemGroup)
+    if (!addToExistingGroup) document.appendChild(itemGroup)
 }
 
 
@@ -58,7 +57,7 @@ async function addNuGetDependency(doc, dependency, version) {
     packageReference.setAttribute("Include", dependency)
     packageReference.setAttribute("Version", version)
     itemGroup.appendChild(packageReference)
-    if (!addToExistingGroup) project.appendChild(itemGroup)
+    if (!addToExistingGroup) document.appendChild(itemGroup)
 }
 
 /**
@@ -85,6 +84,6 @@ async function removeNuGetDependency(doc, dependency, version) {
 }
 
 module.exports = {
-    "removeProjectDep": removeProjectDep, "addNuGetDependency": addNuGetDependency, "removeNuGetDependency": removeNuGetDependency,
+    "removeProjectDependency": removeProjectDependency, "addNuGetDependency": addNuGetDependency, "removeNuGetDependency": removeNuGetDependency,
     "addProjectDependency": addProjectDependency
 }

@@ -54,14 +54,14 @@ async function removeNuGets(doc, nuGets, projPath) {
 }
 
 /**
- * Adds project dependencies in csproj xml.
+ * Adds project dependencies to csproj xml.
  * @param {Document} XML document
  * @param {Object} projDeps project dependencies
  * @param {string} projPath .csproj path
  */
 async function removeProjDeps(doc, projDeps, projPath) {
     await projDeps.forEach(async dependency => {
-        const result = await csprojeditor.removeProjectDep(doc, dependency)
+        const result = await csprojeditor.removeProjectDependency(doc, dependency)
         console.log(`Project "${projPath}" dependency "${dependency}" ${result ? "removed" : "not found"}.`);
     })
     return doc;
@@ -69,7 +69,7 @@ async function removeProjDeps(doc, projDeps, projPath) {
 
 
 /**
- * Removes project dependencies in csproj xml.
+ * Adds project dependencies to csproj xml.
  * @param {Document} XML document
  * @param {Object} projDeps project dependencies
  * @param {string} projPath .csproj path
